@@ -1,0 +1,51 @@
+name: Check
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  cancel-in-progress: true
+  group: check-${{ github.ref }}
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set Up Shared Tools & Tasks
+        uses: maxexcloo/dotfiles/.github/actions/mise@main
+        with:
+          tools: actionlint jq node@24 npm:renovate oxfmt ruff uv
+      - name: Run Checks
+        run: mise run check
+
+  validate-hacs:
+    name: HACS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate With HACS
+        uses: hacs/action@main
+        with:
+          category: integration
+
+  validate-hassfest:
+    name: Hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Validate With Hassfest
+        uses: home-assistant/actions/hassfest@master

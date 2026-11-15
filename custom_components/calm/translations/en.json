@@ -1,0 +1,32 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "This Calm account is already configured.",
+      "reauth_successful": "Calm sign-in was updated.",
+      "single_instance_allowed": "Only one Calm account can be configured.",
+      "unique_id_mismatch": "Sign in with the same Calm account as before."
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to Calm.",
+      "invalid_auth": "Unable to sign in. Check your Calm email address and password."
+    },
+    "step": {
+      "reauth_confirm": {
+        "data": {
+          "email": "Email Address",
+          "password": "Password"
+        },
+        "description": "Sign in again with the same Calm account.",
+        "title": "Sign In to Calm"
+      },
+      "user": {
+        "data": {
+          "email": "Email Address",
+          "password": "Password"
+        },
+        "description": "Enter your Calm email address and password.",
+        "title": "Sign In to Calm"
+      }
+    }
+  }
+}
