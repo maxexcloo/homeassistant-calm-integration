@@ -1,7 +1,7 @@
 # Calm Home Assistant Integration
 
 Play today's Daily Calm on Home Assistant media players using
-[python-calm-client](https://github.com/maxexcloo/python-calm-client).
+[python-calm-client](https://github.com/dcode/python-calm-client).
 
 Requires Home Assistant 2026.10.4 or newer and a Calm account with access to the
 session. This unofficial integration uses Calm's undocumented web API.

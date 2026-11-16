@@ -8,9 +8,7 @@
   "integration_type": "service",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/maxexcloo/homeassistant-calm-integration/issues",
-  "requirements": [
-    "calm-client@https://github.com/maxexcloo/python-calm-client/releases/download/v0.4.2/calm_client-0.4.2-py3-none-any.whl"
-  ],
+  "requirements": ["calm-client==0.4.1"],
   "single_config_entry": true,
-  "version": "0.1.1"
+  "version": "0.1.2"
 }
