@@ -63,7 +63,6 @@ class CalmConfigFlow(ConfigFlow, domain=DOMAIN):
                     return self.async_update_reload_and_abort(
                         self._get_reauth_entry(), data=data
                     )
-                self._abort_if_unique_id_configured()
                 return self.async_create_entry(title="Calm", data=data)
 
         return self.async_show_form(step_id=step_id, data_schema=SCHEMA, errors=errors)

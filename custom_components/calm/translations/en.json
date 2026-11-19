@@ -1,9 +1,7 @@
 {
   "config": {
     "abort": {
-      "already_configured": "This Calm account is already configured.",
       "reauth_successful": "Calm sign-in was updated.",
-      "single_instance_allowed": "Only one Calm account can be configured.",
       "unique_id_mismatch": "Sign in with the same Calm account as before."
     },
     "error": {
