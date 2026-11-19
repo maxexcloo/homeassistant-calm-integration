@@ -18,6 +18,8 @@ from httpx import HTTPError
 from . import CalmConfigEntry, async_store_credentials
 from .const import DOMAIN
 
+DAILY_MEDIA_ID = "daily"
+
 
 async def async_get_media_source(hass: HomeAssistant) -> CalmMediaSource:
     """Return the Calm media source."""
@@ -50,7 +52,7 @@ class CalmMediaSource(MediaSource):
             children=[
                 BrowseMediaSource(
                     domain=DOMAIN,
-                    identifier="daily",
+                    identifier=DAILY_MEDIA_ID,
                     media_class=MediaClass.TRACK,
                     media_content_type=MediaType.MUSIC,
                     title="Daily Calm",
@@ -62,7 +64,7 @@ class CalmMediaSource(MediaSource):
 
     async def async_resolve_media(self, item: MediaSourceItem) -> PlayMedia:
         """Fetch the latest session and resolve its audio at playback time."""
-        if item.identifier != "daily":
+        if item.identifier != DAILY_MEDIA_ID:
             raise Unresolvable("Unknown Calm media")
         async with self._lock:
             entries = self.hass.config_entries.async_loaded_entries(DOMAIN)
