@@ -1,5 +1,7 @@
 """Test account setup and reauthentication."""
 
+from unittest.mock import AsyncMock, patch
+
 import jwt
 import pytest
 from calm_client.exceptions import CalmAPIError, CalmAuthError
@@ -52,18 +54,25 @@ async def test_single_account(hass, mock_client, config_entry):
 
 
 @pytest.mark.parametrize("same_account", [True, False])
-async def test_reauth(hass, mock_client, config_entry, same_account):
+@pytest.mark.parametrize("loaded", [True, False])
+async def test_reauth(hass, mock_client, config_entry, same_account, loaded):
     """Replace expired tokens only when the account identity is unchanged."""
     mock_client.credentials.token = "replacement-access"
     if not same_account:
         mock_client.credentials.id_token = jwt.encode(
             {"sub": "different-account"}, key=None, algorithm="none"
         )
-    result = await config_entry.start_reauth_flow(hass)
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], USER_INPUT
-    )
-    await hass.async_block_till_done()
+    with patch(
+        "custom_components.calm.CalmClient",
+        side_effect=lambda credentials, **_: AsyncMock(credentials=credentials),
+    ):
+        if loaded:
+            assert await hass.config_entries.async_setup(config_entry.entry_id)
+        result = await config_entry.start_reauth_flow(hass)
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], USER_INPUT
+        )
+        await hass.async_block_till_done()
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == (
         "reauth_successful" if same_account else "unique_id_mismatch"

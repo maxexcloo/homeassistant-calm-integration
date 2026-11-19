@@ -43,5 +43,4 @@ async def async_setup_entry(hass: HomeAssistant, entry: CalmConfigEntry) -> bool
 
 async def async_unload_entry(hass: HomeAssistant, entry: CalmConfigEntry) -> bool:
     """Unload Calm; Home Assistant owns the shared HTTP client."""
-    async_store_credentials(hass, entry)
     return True
