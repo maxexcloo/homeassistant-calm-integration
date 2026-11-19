@@ -3,7 +3,7 @@
 Play today's Daily Calm on Home Assistant media players using
 [python-calm-client](https://github.com/dcode/python-calm-client).
 
-Requires Home Assistant 2026.10.4 or newer and a Calm account with access to the
+Requires Home Assistant 2026.11.2 or newer and a Calm account with access to the
 session. This unofficial integration uses Calm's undocumented web API.
 
 ## Installation
