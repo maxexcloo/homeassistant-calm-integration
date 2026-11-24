@@ -1,5 +1,7 @@
 """Set up Calm."""
 
+from collections.abc import Mapping
+
 from calm_client import CalmClient, Credentials
 from calm_client.exceptions import CalmAPIError, CalmAuthError
 from homeassistant.config_entries import ConfigEntry
@@ -14,8 +16,12 @@ type CalmConfigEntry = ConfigEntry[CalmClient]
 
 
 @callback
-def async_store_credentials(hass: HomeAssistant, entry: CalmConfigEntry) -> None:
-    """Persist rotated tokens without retaining the account password."""
+def async_store_credentials(
+    hass: HomeAssistant, entry: CalmConfigEntry, previous_data: Mapping[str, object]
+) -> None:
+    """Persist rotated tokens only while the entry still uses the original sign-in."""
+    if entry.data is not previous_data:
+        return
     credentials = entry.runtime_data.credentials.model_dump(mode="json")
     if credentials != entry.data[CONF_CREDENTIALS]:
         hass.config_entries.async_update_entry(
@@ -25,8 +31,9 @@ def async_store_credentials(hass: HomeAssistant, entry: CalmConfigEntry) -> None
 
 async def async_setup_entry(hass: HomeAssistant, entry: CalmConfigEntry) -> bool:
     """Validate the saved Calm session."""
+    previous_data = entry.data
     client = CalmClient(
-        Credentials.model_validate(entry.data[CONF_CREDENTIALS]),
+        Credentials.model_validate(previous_data[CONF_CREDENTIALS]),
         client=get_async_client(hass),
     )
     entry.runtime_data = client
@@ -37,7 +44,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: CalmConfigEntry) -> bool
     except CalmAPIError, HTTPError, TimeoutError:
         raise ConfigEntryNotReady("Unable to connect to Calm") from None
     finally:
-        async_store_credentials(hass, entry)
+        async_store_credentials(hass, entry, previous_data)
     return True
 
 

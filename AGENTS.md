@@ -7,6 +7,5 @@
   first guide.
 - Respect Calm's account lock flags before returning audio.
 - Keep credentials and stream URLs out of integration logs and entity state.
-- Declare runtime requirements only in `manifest.json`; the test task installs
-  them from there.
+- Declare runtime requirements only in `manifest.json`.
 - Use upstream `calm-client` releases rather than maintaining a fork.

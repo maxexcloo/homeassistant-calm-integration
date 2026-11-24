@@ -71,6 +71,7 @@ class CalmMediaSource(MediaSource):
             if not entries:
                 raise Unresolvable("Set up Calm before playing Daily Calm")
             entry: CalmConfigEntry = entries[0]
+            previous_data = entry.data
             client = entry.runtime_data
             try:
                 feed = await client.get_category_feed("home")
@@ -101,4 +102,4 @@ class CalmMediaSource(MediaSource):
             except CalmAPIError, HTTPError, TimeoutError:
                 raise Unresolvable("Unable to connect to Calm") from None
             finally:
-                async_store_credentials(self.hass, entry)
+                async_store_credentials(self.hass, entry, previous_data)
