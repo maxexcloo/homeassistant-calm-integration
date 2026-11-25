@@ -10,5 +10,5 @@
   "issue_tracker": "https://github.com/maxexcloo/homeassistant-calm-integration/issues",
   "requirements": ["calm-client==0.4.1"],
   "single_config_entry": true,
-  "version": "0.1.2"
+  "version": "0.1.3"
 }
